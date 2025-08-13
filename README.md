@@ -1,6 +1,11 @@
+
 # Market Bottoms Notifier
 
 This application fetches 4-hour candles for IWDA and VWCE ETFs, applies the Williams Vix Fix indicator, and sends a Telegram notification if it's a good day to buy.
+
+## Indicator Example
+
+![Williams Vix Fix Indicator](docs/indicator.png)
 
 ## Features
 - Fetches 4h candles for:
