@@ -48,23 +48,31 @@ def main():
 			continue
 		
 		indicator_df = williams_vix_fix(df)
-		indicator_df.to_csv(f"data/{name}_indicator.csv")
+		#indicator_df.to_csv(f"data/{name}_indicator.csv")
 		last = indicator_df.iloc[-1].squeeze()
 		logger.info(f"{name} ({ticker}): {last}")
 
 		is_bottom = int(last['bottom'].iloc[0]) == 1
 		results[name] = is_bottom
 
-		# TEST is_bottom condition
-		# Get row where wvf == 4.316614315920342
-		#wvf_row = indicator_df[indicator_df['wvf'] == 4.316614315920342]
-		#logger.info(f"WVF row for {name}:\n{wvf_row}")
-		#is_bottom_test = int(wvf_row['bottom'].iloc[0]) == 1
-		#logger.info(f"{name} is_bottom_test: {is_bottom_test}")
-
+		# Calculate price variance for last 4 days
+		last_4_days = df['Close'].tail(4)
+		min_price = float(last_4_days.min())
+		max_price = float(last_4_days.max())
+		current_price = float(last_4_days.iloc[-1])
+		price_variance = max_price - min_price
+		variance_percentage = (price_variance / min_price) * 100
+		
+		# Send simple message with price analysis
+		msg = (f"[{name}](https://finance.yahoo.com/quote/{ticker}) - Last 4 days analysis:\n"
+			   f"Current: €{current_price:.2f}\n"
+			   f"Min: €{min_price:.2f} | Max: €{max_price:.2f}\n"
+			   f"Variance: €{price_variance:.2f} ({variance_percentage:.1f}%)")
+		
+		tm.log(msg)
+		
 		if is_bottom:
-			msg = f"{name}: Good day to buy!"
-			tm.log(f"Market Bottom Alert!\n{msg}")
+			tm.log(f"[BUY] Market Bottom Alert for {name}!")
 
 if __name__ == "__main__":
 	main()

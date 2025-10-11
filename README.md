@@ -47,13 +47,13 @@ Edit your crontab:
 ```
 crontab -e
 ```
-Add this line to run every day at 22:00 (10:00 PM):
+Add this line to run every weekday at 22:00 (10:00 PM):
 ```
-0 22 * * * /path/to/your/project/run_app.sh >> /path/to/your/project/app.log 2>&1
+0 22 * * 1-5 /path/to/your/project/run_app.sh >> /path/to/your/project/app.log 2>&1
 ```
 Or, run the Python script directly:
 ```
-0 22 * * * cd /path/to/your/project && /usr/bin/python3 app.py >> app.log 2>&1
+0 22 * * 1-5 cd /path/to/your/project && /usr/bin/python3 app.py >> app.log 2>&1
 ```
 
 ## Notes

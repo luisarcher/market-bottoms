@@ -1,3 +1,4 @@
 #!/bin/bash
-# cd /path/to/your/project
+cd ~/market-bottoms
+#source ./.venv/bin/activate
 python3 app.py
